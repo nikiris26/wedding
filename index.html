@@ -381,7 +381,7 @@
               <p class="text-sm font-light mb-1 uppercase tracking-widest">
                 Jumat, 23 Oktober 2026
               </p>
-              <p class="text-sm font-light mb-6">07.30 WIB - Selesai</p>
+              <p class="text-sm font-light mb-6">07.00 WIB - Selesai</p>
               <p class="text-xs tracking-widest mb-2 uppercase text-gray-300">
                 Tempat
               </p>
@@ -465,7 +465,7 @@
                 <!-- Titik Kontak Tengah Chip -->
                 <div class="w-4 h-3 bg-amber-500/30 rounded-xs border border-amber-600/40 z-10"></div>
               </div>
-              <div class="h-10 flex items-center justify-end overflow-visible">
+              <div class="h-8 flex items-center justify-end overflow-visible">
                 <img
                   src="jago (2).png"
                   alt="Logo Bank Jago"
@@ -488,33 +488,87 @@
               </p>
               <p
                 class="text-lg font-mono font-bold tracking-wider text-white"
-                id="gift-norek"
+                id="norek-jago"
               >
-                Memuat...
+                100439795046
               </p>
             </div>
 
             <!-- Nama & Tombol Salin -->
             <div class="flex justify-between items-end">
               <div>
-                <p
-                  class="text-[10px] uppercase tracking-widest text-amber-200/70"
-                >
-                  Pemilik Rekening
-                </p>
-                <p
-                  class="text-xs font-semibold uppercase tracking-wide text-white"
-                  id="gift-nama"
-                >
-                  Memuat...
-                </p>
+                <p class="text-[10px] uppercase tracking-widest text-amber-200/70">Pemilik Rekening</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-white">Nurus Shubhiyyah Ismail</p>
               </div>
 
               <button
-                id="btn-salin-gift"
-                onclick="salinRekening()"
+                onclick="salinRekening('norek-jago', this)"
                 class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 text-xs px-4 py-2 rounded-xl border border-amber-500/30 transition-all font-semibold flex items-center space-x-1.5"
               >
+                <i class="fa-regular fa-copy"></i>
+                <span>Salin</span>
+              </button>
+            </div>
+          </div>
+
+
+          <div
+            data-aos="flip-left"
+            data-aos-easing="ease-out-cubic"
+            data-aos-duration="2000"
+            class="relative overflow-hidden rounded-2xl p-6 text-white shadow-xl bg-gradient-to-br from-emerald-800 via-teal-800 to-slate-900 border border-emerald-500/30 transition-all duration-300"
+          >
+            <!-- Bagian Atas: Chip & Logo Bank -->
+            <div class="flex justify-between items-center mb-6">
+              <div
+                class="w-12 h-9 bg-gradient-to-tr from-yellow-300 via-amber-200 to-yellow-400 rounded-md border border-amber-500/60 shadow-md relative overflow-hidden flex items-center justify-center p-1"
+              >
+                <!-- Garis-garis Sirkuit Chip -->
+                <div class="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[1px] p-1 opacity-70">
+                  <div class="border-r border-b border-amber-700/40 rounded-tl-sm"></div>
+                  <div class="border-b border-amber-700/40 rounded-tr-sm"></div>
+                  <div class="border-r border-amber-700/40 rounded-bl-sm"></div>
+                  <div class="border-amber-700/40 rounded-br-sm"></div>
+                </div>
+                <!-- Titik Kontak Tengah Chip -->
+                <div class="w-4 h-3 bg-amber-500/30 rounded-xs border border-amber-600/40 z-10"></div>
+              </div>
+              <div class="h-8 flex items-center justify-end overflow-visible">
+                <img
+                  src="bsi.webp"
+                  alt="Logo Bank BSI"
+                  class="h-7 w-auto object-contain filter brightness-200 contrast-200 drop-shadow"
+                />
+              </div>
+            </div>
+
+            <!-- Nomor Rekening -->
+            <div class="mb-4">
+              <p
+                class="text-[10px] uppercase tracking-widest text-amber-200/70 mb-1"
+              >
+                Nomor Rekening
+              </p>
+              <p
+                class="text-lg font-mono font-bold tracking-wider text-white"
+                id="norek-bsi"
+              >
+                7341134808
+              </p>
+            </div>
+
+            <!-- Nama & Tombol Salin -->
+            <div class="flex justify-between items-end">
+              <div>
+                <p class="text-[10px] uppercase tracking-widest text-amber-200/70">Pemilik Rekening</p>
+                <p class="text-xs font-semibold uppercase tracking-wide text-white">Nurus Shubhiyyah Ismail</p>
+              </div>
+
+              <button
+                onclick="salinRekening('norek-bsi', this)"
+                class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-200 text-xs px-4 py-2 rounded-xl border border-emerald-500/30 transition-all font-semibold flex items-center space-x-1.5"
+              >
+                <i class="fa-regular fa-copy"></i>
                 <span>Salin</span>
               </button>
             </div>
@@ -723,23 +777,6 @@
         AOS.init({ once: false, offset: 50 });
       });
 
-      let currentNorek = "";
-
-      async function loadGiftData() {
-        try {
-          const response = await fetch(`${SCRIPT_URL}?action=get_gift`);
-          const data = await response.json();
-
-          if (data.nama && data.norek) {
-            document.getElementById("gift-nama").innerText = data.nama;
-            document.getElementById("gift-norek").innerText = data.norek;
-            currentNorek = data.norek; // Simpan untuk fungsi salin
-          }
-        } catch (error) {
-          console.error("Gagal memuat data gift:", error);
-        }
-      }
-
       // Buka Undangan
       function bukaUndangan() {
         document.body.classList.remove("overflow-hidden");
@@ -752,10 +789,8 @@
 
         validateAndLoadData();
         loadUcapanCards();
-        loadGiftData();
 
         const randomInterval = Math.floor(Math.random() * (60000 - 30000 + 1)) + 30000;
-
         setInterval(() => {
           if (typeof loadUcapanCards === "function") {
             loadUcapanCards();
@@ -824,13 +859,13 @@
       });
 
       // Salin Rekening
-      function salinRekening() {
-        if (!currentNorek) return;
-        navigator.clipboard.writeText(currentNorek).then(() => {
+      function salinRekening(elementId, btnElement) {
+        const textToCopy = document.getElementById(elementId).innerText.trim();
+        navigator.clipboard.writeText(textToCopy).then(() => {
           Swal.fire({
             icon: "success",
             title: "Nomor rekening berhasil disalin!",
-            text: currentNorek,
+            text: textToCopy,
             showConfirmButton: false,
             timer: 3000,
             toast: true,
